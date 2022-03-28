@@ -124,9 +124,9 @@ public class BingoDialogPane extends DialogPane
     {
         String s = "";
 
-        if (fxLarett.isSelected()) s += fxLarett.getText() + ",";
-        if (fxLodrett.isSelected()) s += fxLodrett.getText()+ ",";
-        if (fxKross.isSelected()) s += fxKross.getText();
+        if (fxLarett.isSelected()) s += fxLarett.getText() + "/";
+        if (fxLodrett.isSelected()) s += fxLodrett.getText() + "/";
+        if (fxKross.isSelected()) s += fxKross.getText() + "/";
 
         return s;
     }

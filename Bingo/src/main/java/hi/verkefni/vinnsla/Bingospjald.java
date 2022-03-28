@@ -96,7 +96,7 @@ public class Bingospjald implements BingospjaldInterface
     @Override
     public boolean erBingo(String s)
     {
-        for (String b : s.split(","))
+        for (String b : s.split("/"))
             for (int i = 0; i < y; i++)
             {
                 // L arr nota ég ef það er bingo til að lita bingo rununa.

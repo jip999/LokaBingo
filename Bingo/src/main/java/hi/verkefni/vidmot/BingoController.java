@@ -28,7 +28,9 @@ public class BingoController implements Initializable
     @FXML
     private GridPane fxGrid;
     @FXML
-    private Label fxBingovinningur;
+    private Label fxBingovinningur, fxLeikur, fxTala;
+    @FXML
+    private Button fxBingo, fxUmferd, fxNyrLeikur, fxHaettaLeik;
     @FXML
     private VBox fxVBox;
     //---------------------------------------------
@@ -132,7 +134,13 @@ public class BingoController implements Initializable
         // Stilli lit á spjaldið
         fxVBox.setStyle(litir[0]);
         fxGrid.setStyle(litir[1] + litir[2]);
+        fxBingo.     setStyle(litir[1] + litir[2] + litir[3]);
+        fxHaettaLeik.setStyle(litir[1] + litir[2] + litir[3]);
+        fxNyrLeikur. setStyle(litir[1] + litir[2] + litir[3]);
+        fxUmferd.    setStyle(litir[1] + litir[2] + litir[3]);
         fxBingovinningur.setStyle(litir[3]);
+        fxLeikur.        setStyle(litir[3]);
+        fxTala.          setStyle(litir[3]);
 
         // Set tölur á takkana og stilli lit á tökkum og label reitum
         for (int i = 0; i < y; i++)
@@ -147,6 +155,11 @@ public class BingoController implements Initializable
             }
         // gef miðjutakkan frítt ef notandi vill
         friMidja();
+
+        // hvernig leikur
+        StringBuilder sb= new StringBuilder(bingo);
+        sb.deleteCharAt(sb.length() - 1);
+        fxLeikur.setText(sb.toString());
     }
 
     /**
