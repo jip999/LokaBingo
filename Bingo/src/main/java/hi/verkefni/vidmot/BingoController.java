@@ -1,6 +1,7 @@
 package hi.verkefni.vidmot;
 
 import hi.verkefni.vinnsla.Bingospjald;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,7 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /******************************************************************************
@@ -86,6 +92,19 @@ public class BingoController implements Initializable
         }
     }
 
+    public void haettaLeik(ActionEvent e)
+    {
+        System.exit(0);
+    }
+
+    public void nyrLeikur(ActionEvent e)
+    {
+        Stage stage = (Stage) fxVBox.getScene().getWindow();
+        stage.hide();
+        grunnur();
+        stage.show();
+    }
+
     public void ytturTakki(Button b, int px, int py)
     {
         b.setShape(new Circle(1.0, 1.0, 1.0));
@@ -96,15 +115,19 @@ public class BingoController implements Initializable
 
     public void friMidja()
     {
+        int midX = (x / 2);
+        int midY = ((y - 1)/2);
+        int midGrid = (fxGrid.getChildren().size() / 2) + midX;
+        Button b = (Button) fxGrid.getChildren().get(midGrid);
+
         if (midja.equals("Já"))
         {
-            int midX = (x / 2);
-            int midY = ((y - 1)/2);
-            int midGrid = (fxGrid.getChildren().size() / 2) + midX;
-
-            Button b = (Button) fxGrid.getChildren().get(midGrid);
             ytturTakki(b, midX, midY);
             b.setText("FREE");
+        }
+        else
+        {
+            setTakka(midX, midY);
         }
     }
 
@@ -114,7 +137,22 @@ public class BingoController implements Initializable
         String num = String.valueOf(spjald[i-1][j]);
 
         b.setText(num);
+        b.setShape(null);
         b.setStyle(litir[0] + litir[2] + litir[3]);
+        b.setDisable(false);
+    }
+
+    public void setLitiSpjald()
+    {
+        fxVBox.setStyle(litir[0]);
+        fxGrid.setStyle(litir[1] + litir[2]);
+        fxBingo.     setStyle(litir[1] + litir[2] + litir[3]);
+        fxHaettaLeik.setStyle(litir[1] + litir[2] + litir[3]);
+        fxNyrLeikur. setStyle(litir[1] + litir[2] + litir[3]);
+        fxUmferd.    setStyle(litir[1] + litir[2] + litir[3]);
+        fxBingovinningur.setStyle(litir[3]);
+        fxLeikur.        setStyle(litir[3]);
+        fxTala.          setStyle(litir[3]);
     }
 
     /**
@@ -127,20 +165,10 @@ public class BingoController implements Initializable
         vinnsluTilvisun = new Bingospjald();
         spjald = vinnsluTilvisun.nyttSpjald();
 
-        // Sæki liti fyrir spjaldið
+        // Sæki liti fyrir spjaldið og stilli
         String l = vinnsluTilvisun.getThemuLitirFrom(thema);
         litir = l.split(",");
-
-        // Stilli lit á spjaldið
-        fxVBox.setStyle(litir[0]);
-        fxGrid.setStyle(litir[1] + litir[2]);
-        fxBingo.     setStyle(litir[1] + litir[2] + litir[3]);
-        fxHaettaLeik.setStyle(litir[1] + litir[2] + litir[3]);
-        fxNyrLeikur. setStyle(litir[1] + litir[2] + litir[3]);
-        fxUmferd.    setStyle(litir[1] + litir[2] + litir[3]);
-        fxBingovinningur.setStyle(litir[3]);
-        fxLeikur.        setStyle(litir[3]);
-        fxTala.          setStyle(litir[3]);
+        setLitiSpjald();
 
         // Set tölur á takkana og stilli lit á tökkum og label reitum
         for (int i = 0; i < y; i++)
@@ -153,25 +181,18 @@ public class BingoController implements Initializable
                     t.setStyle(litir[3]);
                 }
             }
-        // gef miðjutakkan frítt ef notandi vill
-        friMidja();
+        friMidja();// gef miðjutakkan frítt ef notandi vill
 
         // hvernig leikur
         StringBuilder sb= new StringBuilder(bingo);
         sb.deleteCharAt(sb.length() - 1);
         fxLeikur.setText(sb.toString());
+
+        // ekki bingo
+        fxBingovinningur.setText("");
     }
 
-    /**
-     * Opnar dialog glugga og tekur stillingar fyrir þemu,
-     * hvort talvan eigi að draga, og hvernig bingo verður
-     * í leiknum.
-     *
-     * @param url ónotað
-     * @param resourceBundle ónotað
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
+    public void grunnur()
     {
         BingoDialogPane bdg = new BingoDialogPane();
         bdg.setStillingar();
@@ -185,5 +206,19 @@ public class BingoController implements Initializable
         y = fxGrid.getRowCount();
 
         grunnStillaSpjald();
+    }
+
+    /**
+     * Opnar dialog glugga og tekur stillingar fyrir þemu,
+     * hvort talvan eigi að draga, og hvernig bingo verður
+     * í leiknum.
+     *
+     * @param url ónotað
+     * @param resourceBundle ónotað
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        grunnur();
     }
 }

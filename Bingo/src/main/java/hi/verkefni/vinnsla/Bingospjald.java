@@ -1,5 +1,7 @@
 package hi.verkefni.vinnsla;
 
+import hi.verkefni.vidmot.BingoApplication;
+
 import java.util.Random;
 
 /******************************************************************************

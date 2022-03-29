@@ -61,7 +61,7 @@
          </VBox>
          <VBox alignment="CENTER" prefHeight="80.0" prefWidth="163.0" spacing="5.0">
             <children>
-               <Button fx:id="fxNyrLeikur" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Nýr leikur">
+               <Button fx:id="fxNyrLeikur" minHeight="35.0" mnemonicParsing="false" onAction="#nyrLeikur" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Nýr leikur">
                   <font>
                      <Font size="18.0" />
                   </font>
@@ -69,7 +69,7 @@
                      <Insets bottom="1.0" />
                   </padding>
                </Button>
-               <Button fx:id="fxHaettaLeik" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Hætta leik">
+               <Button fx:id="fxHaettaLeik" minHeight="35.0" mnemonicParsing="false" onAction="#haettaLeik" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Hætta leik">
                   <font>
                      <Font size="18.0" />
                   </font>
