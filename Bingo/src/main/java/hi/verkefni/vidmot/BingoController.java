@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class BingoController implements Initializable
 {
     private Bingospjald vinnsluTilvisun;
+    private BingoDialogPane bdg;
     //---------------------------------------------
     @FXML
     private GridPane fxGrid;
@@ -194,9 +195,7 @@ public class BingoController implements Initializable
 
     public void grunnur()
     {
-        BingoDialogPane bdg = new BingoDialogPane();
         bdg.setStillingar();
-
         thema = bdg.getThema();
         draga = bdg.getDraga();
         bingo = bdg.getBingo();
@@ -219,6 +218,7 @@ public class BingoController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        bdg = new BingoDialogPane();
         grunnur();
     }
 }

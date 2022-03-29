@@ -25,6 +25,8 @@ import java.util.Optional;
  *****************************************************************************/
 public class BingoDialogPane extends DialogPane
 {
+    private final BingoDialog vinnsluTilvisun;
+    //---------------------------------------------
     @FXML
     private DialogPane fxDialogPane;
     @FXML
@@ -35,8 +37,9 @@ public class BingoDialogPane extends DialogPane
     private ToggleGroup thema, draga, midja;
     @FXML
     private CheckBox fxKross, fxLarett, fxLodrett;
+    //---------------------------------------------
 
-    private final BingoDialog vinnsluTilvisun;
+
 
     /**
      * Býr til Dialog glugga út frá dialog-view.fxml skránni
