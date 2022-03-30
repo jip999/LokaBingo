@@ -1,7 +1,6 @@
 package hi.verkefni.vidmot;
 
 import hi.verkefni.vinnsla.Bingospjald;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,12 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /******************************************************************************
@@ -47,10 +43,12 @@ public class BingoController implements Initializable
     private String midja;
 
     private String[] litir;
-    int[][] spjald;
+    private int[][] spjald;
+    private int[] randTolur;
 
     private int x;
     private int y;
+    private int tel;
     //---------------------------------------------
 
     /**
@@ -74,6 +72,8 @@ public class BingoController implements Initializable
         // Ef það er bingo þá birti ég BINGO texta og felli virkni á tökkum
         if (vinnsluTilvisun.erBingo(bingo))
         {
+            fxUmferd.setDisable(true);
+
             fxBingovinningur.setText("B I N G O !");
             int start = fxGrid.getRowCount() - 1;
             int size = fxGrid.getChildren().size();
@@ -93,17 +93,29 @@ public class BingoController implements Initializable
         }
     }
 
-    public void haettaLeik(ActionEvent e)
+    public void haettaLeik()
     {
         System.exit(0);
     }
 
-    public void nyrLeikur(ActionEvent e)
+    public void nyrLeikur()
     {
         Stage stage = (Stage) fxVBox.getScene().getWindow();
         stage.hide();
         grunnur();
         stage.show();
+    }
+
+    public void naestaUmferd()
+    {
+        String talaText = "Tala: ";
+        if (tel < 75)
+            fxTala.setText(talaText + randTolur[tel++]);
+        else
+        {
+            fxTala.setText(talaText + randTolur[tel - 1] + " F");
+            fxUmferd.setDisable(true);
+        }
     }
 
     public void ytturTakki(Button b, int px, int py)
@@ -166,6 +178,11 @@ public class BingoController implements Initializable
         vinnsluTilvisun = new Bingospjald();
         spjald = vinnsluTilvisun.nyttSpjald();
 
+        // hvernig leikur
+        StringBuilder sb= new StringBuilder(bingo);
+        sb.deleteCharAt(sb.length() - 1);
+        fxLeikur.setText(sb.toString());
+
         // Sæki liti fyrir spjaldið og stilli
         String l = vinnsluTilvisun.getThemuLitirFrom(thema);
         litir = l.split(",");
@@ -182,12 +199,22 @@ public class BingoController implements Initializable
                     t.setStyle(litir[3]);
                 }
             }
-        friMidja();// gef miðjutakkan frítt ef notandi vill
 
-        // hvernig leikur
-        StringBuilder sb= new StringBuilder(bingo);
-        sb.deleteCharAt(sb.length() - 1);
-        fxLeikur.setText(sb.toString());
+        tel = 0;
+        if (draga.equals("Já"))
+        {
+            fxUmferd.setDisable(false);
+            randTolur = vinnsluTilvisun.handahofsTolur();
+            naestaUmferd();
+        }
+        else
+        {
+            fxUmferd.setDisable(true);
+            randTolur = null;
+            fxTala.setText("Ódregið");
+        }
+
+        friMidja();// gef miðjutakkan frítt ef notandi vill
 
         // ekki bingo
         fxBingovinningur.setText("");

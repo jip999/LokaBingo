@@ -39,8 +39,6 @@ public class BingoDialogPane extends DialogPane
     private CheckBox fxKross, fxLarett, fxLodrett;
     //---------------------------------------------
 
-
-
     /**
      * Býr til Dialog glugga út frá dialog-view.fxml skránni
      */

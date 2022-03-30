@@ -32,11 +32,11 @@ public class Bingospjald implements BingospjaldInterface
     }
 
     /**
-     * Býr til random tölur fyrir nyttSpjald() klasan.
+     * Býr til random tölur.
      *
-     * @return skilar 'r' mörgun random tölum á bilinu 'r'
+     * @return skilar 75 random tölum
      */
-    private int[] handahofsTolur()
+    public int[] handahofsTolur()
     {
         Random rand = new Random();
         int r = 75;

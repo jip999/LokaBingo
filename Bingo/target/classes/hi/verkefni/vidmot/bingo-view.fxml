@@ -38,7 +38,7 @@
          </VBox>
          <VBox alignment="CENTER" prefHeight="80.0" prefWidth="164.0" spacing="5.0">
             <children>
-               <Label fx:id="fxTala" minHeight="35.0" prefHeight="35.0" prefWidth="163.0" text="Tala: ??">
+               <Label fx:id="fxTala" minHeight="35.0" prefHeight="35.0" prefWidth="163.0" text="Tala: ">
                   <font>
                      <Font size="18.0" />
                   </font>
@@ -49,7 +49,7 @@
                      <Insets left="48.0" />
                   </padding>
                </Label>
-               <Button fx:id="fxUmferd" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Næsta umferð">
+               <Button fx:id="fxUmferd" minHeight="35.0" mnemonicParsing="false" onAction="#naestaUmferd" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Næsta umferð">
                   <font>
                      <Font size="18.0" />
                   </font>
