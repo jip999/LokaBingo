@@ -70,27 +70,7 @@ public class BingoController implements Initializable
         ytturTakki(b, posX, posY);
 
         // Ef það er bingo þá birti ég BINGO texta og felli virkni á tökkum
-        if (vinnsluTilvisun.erBingo(bingo))
-        {
-            fxUmferd.setDisable(true);
-
-            fxBingovinningur.setText("B I N G O !");
-            int start = fxGrid.getRowCount() - 1;
-            int size = fxGrid.getChildren().size();
-
-            //Fyrir sigurlínu
-            int[][]spjald = vinnsluTilvisun.getSpjaldFylki();
-
-            for (int i = start; i < size; i++)
-            {
-                Node n = fxGrid.getChildren().get(i);
-                n.setDisable(true);
-
-                // Breyti lit á sigurlínu hér
-                if (spjald[(i / 5) - 1][i % 5] == (-2))
-                    n.setStyle(litir[6]);
-            }
-        }
+        if (!draga.equals("Já")) efBingo();
     }
 
     public void haettaLeik()
@@ -124,6 +104,32 @@ public class BingoController implements Initializable
         b.setStyle(litir[4] + litir[5]);
         vinnsluTilvisun.aReit(px, py);
         b.setDisable(true);
+    }
+
+    public void efBingo()
+    {
+        if (vinnsluTilvisun.erBingo(bingo))
+        {
+            fxUmferd.setDisable(true);
+            fxBingo.setDisable(true);
+
+            fxBingovinningur.setText("B I N G O !");
+            int start = fxGrid.getRowCount() - 1;
+            int size = fxGrid.getChildren().size();
+
+            //Fyrir sigurlínu
+            int[][]spjald = vinnsluTilvisun.getSpjaldFylki();
+
+            for (int i = start; i < size; i++)
+            {
+                Node n = fxGrid.getChildren().get(i);
+                n.setDisable(true);
+
+                // Breyti lit á sigurlínu hér
+                if (spjald[(i / 5) - 1][i % 5] == (-2))
+                    n.setStyle(litir[6]);
+            }
+        }
     }
 
     public void friMidja()
@@ -168,6 +174,38 @@ public class BingoController implements Initializable
         fxTala.          setStyle(litir[3]);
     }
 
+    public void setTolurSpjald()
+    {
+        // Set tölur á takkana og stilli lit á tökkum og label reitum
+        for (int i = 0; i < y; i++)
+            for (int j = 0; j < x; j++)
+            {
+                if (i != 0) setTakka(i, j);
+                else
+                {
+                    Label t = (Label) fxGrid.getChildren().get(j);
+                    t.setStyle(litir[3]);
+                }
+            }
+    }
+
+    public void setFxUmferd()
+    {
+        tel = 0;
+        if (draga.equals("Já"))
+        {
+            fxUmferd.setDisable(false);
+            randTolur = vinnsluTilvisun.handahofsTolur();
+            naestaUmferd();
+        }
+        else
+        {
+            fxUmferd.setDisable(true);
+            randTolur = null;
+            fxTala.setText("Ódregið");
+        }
+    }
+
     /**
      * Býr til spjald og setur random tölur á takka.
      * Grunnstillir útlit í bingospjaldinu.
@@ -183,40 +221,16 @@ public class BingoController implements Initializable
         sb.deleteCharAt(sb.length() - 1);
         fxLeikur.setText(sb.toString());
 
-        // Sæki liti fyrir spjaldið og stilli
+        // Sæki liti fyrir spjaldið
         String l = vinnsluTilvisun.getThemuLitirFrom(thema);
         litir = l.split(",");
+
         setLitiSpjald();
+        setTolurSpjald();
+        setFxUmferd();
+        friMidja();
 
-        // Set tölur á takkana og stilli lit á tökkum og label reitum
-        for (int i = 0; i < y; i++)
-            for (int j = 0; j < x; j++)
-            {
-                if (i != 0) setTakka(i, j);
-                else
-                {
-                    Label t = (Label) fxGrid.getChildren().get(j);
-                    t.setStyle(litir[3]);
-                }
-            }
-
-        tel = 0;
-        if (draga.equals("Já"))
-        {
-            fxUmferd.setDisable(false);
-            randTolur = vinnsluTilvisun.handahofsTolur();
-            naestaUmferd();
-        }
-        else
-        {
-            fxUmferd.setDisable(true);
-            randTolur = null;
-            fxTala.setText("Ódregið");
-        }
-
-        friMidja();// gef miðjutakkan frítt ef notandi vill
-
-        // ekki bingo
+        fxBingo.setDisable(!draga.equals("Já"));
         fxBingovinningur.setText("");
     }
 

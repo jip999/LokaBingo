@@ -26,7 +26,7 @@
                      <Insets left="5.0" />
                   </padding>
                </Label>
-               <Button fx:id="fxBingo" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Bingo">
+               <Button fx:id="fxBingo" minHeight="35.0" mnemonicParsing="false" onAction="#efBingo" prefHeight="35.0" prefWidth="143.0" style="-fx-background-radius: 0px;" text="Athuga bingo">
                   <font>
                      <Font size="18.0" />
                   </font>
