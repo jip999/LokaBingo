@@ -1,7 +1,5 @@
 package hi.verkefni.vinnsla;
 
-import hi.verkefni.vidmot.BingoApplication;
-
 import java.util.Random;
 
 /******************************************************************************
@@ -126,22 +124,3 @@ public class Bingospjald implements BingospjaldInterface
         return false;
     }
 }
-
-/*
-if (b.equals("Lárétt") && spjaldFylki[i][j] != (-1)) break;
-if (b.equals("Lóðrétt") && spjaldFylki[j][i] != (-1)) break;
-if (b.equals("Í Kross"))
-{
-    if ((i == 0) && spjaldFylki[j][j] != (-1)) break;
-    if ((i == 1) && spjaldFylki[j][x - 1 - j] != (-1)) break;
-    if (i > 1) break;
-}
-
-if (b.equals("Lárétt")) lita[i][j] = true;
-if (b.equals("Lóðrétt")) lita[j][i] = true;
-if (b.equals("Í Kross"))
-{
-    if (i == 0) lita[j][j] = true;
-    if (i == 1) lita[j][x - 1 - j] = true;
-}
-*/

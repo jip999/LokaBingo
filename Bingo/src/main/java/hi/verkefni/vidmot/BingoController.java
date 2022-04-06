@@ -37,18 +37,13 @@ public class BingoController implements Initializable
     @FXML
     private VBox fxVBox;
     //---------------------------------------------
-    private String thema;
-    private String draga;
-    private String bingo;
-    private String midja;
+    private String thema, draga, bingo, midja;
 
     private String[] litir;
     private int[][] spjald;
     private int[] randTolur;
 
-    private int x;
-    private int y;
-    private int tel;
+    private int x, y, tel;
     //---------------------------------------------
 
     /**
@@ -67,7 +62,7 @@ public class BingoController implements Initializable
         Button b = (Button) actionEvent.getSource();
         int posX = GridPane.getRowIndex(b) - 1;
         int posY = GridPane.getColumnIndex(b);
-        ytturTakki(b, posX, posY);
+        ytturTakki(b, posX, posY, "");
 
         // Ef það er bingo þá birti ég BINGO texta og felli virkni á tökkum
         if (!draga.equals("Já")) efBingo();
@@ -98,12 +93,24 @@ public class BingoController implements Initializable
         }
     }
 
-    public void ytturTakki(Button b, int px, int py)
+    public void ytturTakki(Button b, int px, int py, String midTala)
     {
-        b.setShape(new Circle(1.0, 1.0, 1.0));
-        b.setStyle(litir[4] + litir[5]);
-        vinnsluTilvisun.aReit(px, py);
-        b.setDisable(true);
+        if (draga.equals("Nei"))
+        {
+            b.setShape(new Circle(1.0, 1.0, 1.0));
+            b.setStyle(litir[4] + litir[5]);
+            vinnsluTilvisun.aReit(px, py);
+            b.setDisable(true);
+        }
+        else
+            for (int i = 0; i < tel; i++)
+                if (String.valueOf(randTolur[i]).equals(b.getText()))
+                {
+                    b.setShape(new Circle(1.0, 1.0, 1.0));
+                    b.setStyle(litir[4] + litir[5]);
+                    vinnsluTilvisun.aReit(px, py);
+                    b.setDisable(true);
+                }
     }
 
     public void efBingo()
@@ -141,12 +148,11 @@ public class BingoController implements Initializable
 
         if (midja.equals("Já"))
         {
-            ytturTakki(b, midX, midY);
             b.setText("FREE");
-        }
-        else
-        {
-            setTakka(midX, midY);
+            b.setShape(new Circle(1.0, 1.0, 1.0));
+            b.setStyle(litir[4] + litir[5]);
+            vinnsluTilvisun.aReit(midX, midY);
+            b.setDisable(true);
         }
     }
 
