@@ -117,9 +117,9 @@ public class BingoDialogPane extends DialogPane
     }
 
     /**
-     * Skilar strengja stillingu á hvernig bingo gildir
+     * Skilar stillingu á hvernig bingo er í gangi í current leik
      *
-     * @return strengur lá/lóð og-eða í kross
+     * @return strengur lá/lóð og-eða í kross(hornalínu)
      */
     public String getBingo()
     {
@@ -133,7 +133,8 @@ public class BingoDialogPane extends DialogPane
     }
 
     /**
-     *
+     * Opnar dialog glugga. Sér um að stillingar sem
+     * eru valdar í dialog'inu færist yfir á bingospjaldið.
      */
     public void setStillingar()
     {
@@ -158,4 +159,3 @@ public class BingoDialogPane extends DialogPane
         }
     }
 }
-//Platform.exit();

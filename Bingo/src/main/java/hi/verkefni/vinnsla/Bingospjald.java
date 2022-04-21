@@ -30,9 +30,10 @@ public class Bingospjald implements BingospjaldInterface
     }
 
     /**
-     * Býr til random tölur.
+     * Býr til random tölur shuffle'aðar fyrir bingospjald.
+     * Shuffle'ar 1-15 saman, svo 16-30, ..., 61, 75.
      *
-     * @return skilar 75 random tölum
+     * @return skilar fylki með 75 shuffled tölum ready fyrir bingospjald
      */
     public int[] handahofsTolur()
     {
@@ -40,33 +41,48 @@ public class Bingospjald implements BingospjaldInterface
         int r = 75;
         int[] randFylki = new int[r];
 
-        // Temp array með tölum (1,2,3...,r)
+        for (int i = 0; i < r; i++) randFylki[i] = i + 1;
+
+        // Shuffle (1-15 saman, 16-30 saman, o.s.frv)
         for (int i = 0; i < r; i++)
-            randFylki[i] = i + 1;
-
-        for (int i = 0; i < r; i++) // Shuffle
         {
-            int randVisitala = rand.nextInt(r);
+            int xx = rand.nextInt(15);
 
-            int temp = randFylki[randVisitala];
-            randFylki[randVisitala] = randFylki[i];
+            switch (i / 15)
+            {
+                case 1 -> xx += 15;
+                case 2 -> xx += 30;
+                case 3 -> xx += 45;
+                case 4 -> xx += 60;
+            }
+
+            int temp = randFylki[xx];
+            randFylki[xx] = randFylki[i];
             randFylki[i] = temp;
         }
         return randFylki;
     }
 
+    /**
+     * Skilar litapalletu fyrir litaþemu leiks
+     *
+     * @param s litaþema
+     * @return Skilar litapalletu fyrir litaþemu leiks
+     */
     public String getThemuLitirFrom(String s)
     {
-        String BGC = "-fx-background-color: ";
-        String BC = "-fx-border-color: ";
-        String TF = "-fx-text-fill: ";
-        String L1 = "white;";   // ljós Hvítur
-        String L2 = "#e8e8e8;"; // dökk Hvítur
-        String L3 = "#424242;"; // ljós Grár
-        String L4 = "#333333;"; // dökk Grár
-        String TL1 = "#00ff00;"; // Grænn
-        String TL2 = "#ff0000;"; // Rauður
-        String TL3 = "#ff7000;"; // AppGulur
+        String BGC,BC,TF,L1,L2,L3,L4,TL1,TL2,TL3;
+
+        BGC = "-fx-background-color: ";
+        BC = "-fx-border-color: ";
+        TF = "-fx-text-fill: ";
+        L1 = "white;";   // ljós Hvítur
+        L2 = "#e8e8e8;"; // dökk Hvítur
+        L3 = "#424242;"; // ljós Grár
+        L4 = "#333333;"; // dökk Grár
+        TL1 = "#00ff00;"; // Grænn
+        TL2 = "#ff0000;"; // Rauður
+        TL3 = "#ff7000;"; // AppGulur
 
         if (s.equals("Dökk"))
             return BGC+L3+ "," +BGC+L4+ "," +BC+L2+ "," +TF+L2+
@@ -76,42 +92,67 @@ public class Bingospjald implements BingospjaldInterface
                     "," +BGC+TL2+ "," +TF+L1+ "," +BGC+TL3;
     }
 
+    /**
+     * Skilar spjaldi
+     *
+     * @return skilar spjaldi
+     */
     public int[][] getSpjaldFylki()
     {
         return spjald;
     }
 
+    /**
+     * Býr til, frumstillir og skilar tölum fyrir nýtt spjald
+     *
+     * @return skilar tölum fyrir nýtt spjald
+     */
     @Override
-    public int[][] nyttSpjald() // PRÓFA SET
+    public int[][] nyttSpjald()
     {
         int[] tempFylki = handahofsTolur();
 
-        // Fyrstu 25 tölur í shuffled temp array fara í spjaldArr
         for (int i = 0; i < (x * y); i++)
-            spjald[i / x][i % x] = tempFylki[i];
+        {
+            int xx = i / 5;
 
+            switch (i % 5)
+            {
+                case 1 -> xx += 15;
+                case 2 -> xx += 30;
+                case 3 -> xx += 45;
+                case 4 -> xx += 60;
+            }
+            spjald[i / x][i % x] = tempFylki[xx];
+        }
         return spjald;
     }
 
+    /**
+     * Athugar hvort það er bingo út frá strengi 's'
+     *
+     * @param s tegund bingo's
+     * @return skilar True ef bingo, annars false
+     */
     @Override
     public boolean erBingo(String s)
     {
         for (String b : s.split("/"))
             for (int i = 0; i < y; i++)
             {
-                // L arr nota ég ef það er bingo til að lita bingo rununa.
+                // Nota ef það er bingo til að lita bingo rununa.
                 boolean[][] L = new boolean[x][y];
 
-                // ef tala er < 0 í reit á bingo sem er verið að leita eftir þá set ég temporary -2 í lita arr.
+                // ef tala < 0 í reit á bingo sem er verið að leita eftir þá set ég temp -2 í lita arr.
                 for (int j = 0; j < x; j++)
                 {
                     if      (b.equals("Lárétt" ) && spjald[i][j] < 0) L[i][j] = true;
                     else if (b.equals("Lóðrétt") && spjald[j][i] < 0) L[j][i] = true;
-                    else if (b.equals("Í Kross") && spjald[j][j] < 0 && (i == 0)) L[j][j] = true;
-                    else if (b.equals("Í Kross") && spjald[j][x-1-j] < 0 && (i == 1)) L[j][x-1-j] = true;
+                    else if (b.equals("Hornalína") && spjald[j][j] < 0 && (i == 0)) L[j][j] = true;
+                    else if (b.equals("Hornalína") && spjald[j][x-1-j] < 0 && (i == 1)) L[j][x-1-j] = true;
                     else break;
 
-                    // ef j kemst upp í 4 (lengd bingo runu) þá set ég -2 á spjaldið fyrir vinnigstölur og enda fallið
+                    // ef j kemst upp í 4 (lengd bingo runu) þá set ég -2 á spjald fyrir lit
                     if (j == (x - 1))
                     {
                         for (int k = 0; k < x; k++)

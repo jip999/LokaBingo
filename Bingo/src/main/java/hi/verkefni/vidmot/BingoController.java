@@ -12,14 +12,15 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 /******************************************************************************
  *  Nafn    : Jakub Ingvar Pitak
  *  T-póstur: jip2@hi.is
  *
- *  Lýsing  : Viðmótsklasi sem stýrir og breytir útliti á FXML skránni þegar
- *  appið sjálft er í gangi.
+ *  Lýsing  : Viðmótsklasi sem stýrir og breytir útliti á FXML bingo-view
+ *  skránni þegar appið sjálft er í gangi.
  *
  *****************************************************************************/
 
@@ -62,17 +63,23 @@ public class BingoController implements Initializable
         Button b = (Button) actionEvent.getSource();
         int posX = GridPane.getRowIndex(b) - 1;
         int posY = GridPane.getColumnIndex(b);
-        ytturTakki(b, posX, posY, "");
+        ytturTakki(b, posX, posY);
 
         // Ef það er bingo þá birti ég BINGO texta og felli virkni á tökkum
         if (!draga.equals("Já")) efBingo();
     }
 
+    /**
+     * Hættir keyrslu forrits
+     */
     public void haettaLeik()
     {
         System.exit(0);
     }
 
+    /**
+     * byrjar nýjan leik
+     */
     public void nyrLeikur()
     {
         Stage stage = (Stage) fxVBox.getScene().getWindow();
@@ -81,6 +88,10 @@ public class BingoController implements Initializable
         stage.show();
     }
 
+    /**
+     * birtir næstu bingo tölu ef stillingin "talva dregur"
+     * er á, og bætir teljara fyrir tölu fylkið
+     */
     public void naestaUmferd()
     {
         String talaText = "Tala: ";
@@ -93,7 +104,15 @@ public class BingoController implements Initializable
         }
     }
 
-    public void ytturTakki(Button b, int px, int py, String midTala)
+    /**
+     * Breytir útliti á takka, og afvirkjar hann.
+     * Breytir takka frá kassa í hring og breytir lit eftir litaþemu.
+     *
+     * @param b takki
+     * @param px pos x
+     * @param py pos y
+     */
+    public void ytturTakki(Button b, int px, int py)
     {
         if (draga.equals("Nei"))
         {
@@ -113,6 +132,10 @@ public class BingoController implements Initializable
                 }
     }
 
+    /**
+     * Athugar hvort það er bingo. Ef það er þá er afvirkjað takka,
+     * byrt bingo texta, og breytt lit á sigurlínu
+     */
     public void efBingo()
     {
         if (vinnsluTilvisun.erBingo(bingo))
@@ -139,6 +162,9 @@ public class BingoController implements Initializable
         }
     }
 
+    /**
+     * Breytir miðjuramman í spjaldinu í gefinn reit
+     */
     public void friMidja()
     {
         int midX = (x / 2);
@@ -156,6 +182,12 @@ public class BingoController implements Initializable
         }
     }
 
+    /**
+     * Stillir númer, útlit og lit, og virkjar takka
+     *
+     * @param i röð x á spjaldi
+     * @param j röð y á spjaldi
+     */
     public void setTakka(int i, int j)
     {
         Button b = (Button) fxGrid.getChildren().get((i * x) + j);
@@ -167,6 +199,9 @@ public class BingoController implements Initializable
         b.setDisable(false);
     }
 
+    /**
+     * Stillir liti fyrir spjald
+     */
     public void setLitiSpjald()
     {
         fxVBox.setStyle(litir[0]);
@@ -180,9 +215,11 @@ public class BingoController implements Initializable
         fxTala.          setStyle(litir[3]);
     }
 
+    /**
+     * Setur tölur á takkana og stilli lit á tökkum og label reitum
+     */
     public void setTolurSpjald()
     {
-        // Set tölur á takkana og stilli lit á tökkum og label reitum
         for (int i = 0; i < y; i++)
             for (int j = 0; j < x; j++)
             {
@@ -195,6 +232,10 @@ public class BingoController implements Initializable
             }
     }
 
+    /**
+     * virkjar/óvirkar "umferð" takkann og fær tölur
+     * sem verða shuffle'aðar fyrir hverja umferð
+     */
     public void setFxUmferd()
     {
         tel = 0;
@@ -202,6 +243,17 @@ public class BingoController implements Initializable
         {
             fxUmferd.setDisable(false);
             randTolur = vinnsluTilvisun.handahofsTolur();
+            Random rand = new Random();
+
+            // shuffle'a tölum
+            for (int i = 0; i < 75; i++)
+            {
+                int xx = rand.nextInt(75);
+
+                int temp = randTolur[xx];
+                randTolur[xx] = randTolur[i];
+                randTolur[i] = temp;
+            }
             naestaUmferd();
         }
         else
@@ -240,6 +292,9 @@ public class BingoController implements Initializable
         fxBingovinningur.setText("");
     }
 
+    /**
+     * Grunnstillir spjaldið
+     */
     public void grunnur()
     {
         bdg.setStillingar();

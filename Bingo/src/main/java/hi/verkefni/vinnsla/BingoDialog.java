@@ -1,7 +1,20 @@
 package hi.verkefni.vinnsla;
 
+/******************************************************************************
+ *  Nafn    : Jakub Ingvar Pitak
+ *  T-póstur: jip2@hi.is
+ *
+ *  Lýsing  : Vinnsluklasi sem geymir föll fyrir bingo dialog
+ *
+ *****************************************************************************/
 public class BingoDialog
 {
+    /**
+     * Athugar current litaþemu fyrir dialog og skilar litapallettu
+     *
+     * @param s litaþema
+     * @return skilar litapallettu fyrir dialog
+     */
     public String getLitirFrom(String s)
     {
         String BGC = "-fx-background-color: ";

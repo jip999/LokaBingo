@@ -41,7 +41,7 @@
                               <Font size="18.0" />
                            </font>
                         </CheckBox>
-                        <CheckBox fx:id="fxKross" mnemonicParsing="false" prefHeight="27.0" prefWidth="157.0" text="Í Kross">
+                        <CheckBox fx:id="fxKross" mnemonicParsing="false" prefHeight="27.0" prefWidth="157.0" text="Hornalína">
                            <font>
                               <Font size="18.0" />
                            </font>
